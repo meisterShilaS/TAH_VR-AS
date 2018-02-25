@@ -141,8 +141,7 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
         // エラー時の処理
         // とりあえずログとToastに表示するだけ
         // 致命的なエラーの時もここが呼ばれるのでちゃんと例外投げたりしたほうがいいはず
-        // 実際権限がなくてERROR_INSUFFICIENT_PERMISSIONSが発生すると無限ループっぽくなり危険
-        // 要改良
+        // 認識失敗エラーのときだけ音声認識を再起動
         @Override
         public void onError(int error) {
             String message = "RECOGNITION ERROR: " +
@@ -150,7 +149,8 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
                             errorMessageTable.get(error) : "UNKNOWN KEY");
             Log.d(TAG, message);
             Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
-            if(error != 0) {
+
+            if(error == SpeechRecognizer.ERROR_NO_MATCH) {
                 Intent mIntent = new Intent(ACTION_NAME);
                 sendBroadcast(mIntent);
             }
