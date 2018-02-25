@@ -25,12 +25,15 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
     private static final String TAG = "MyRecognitionActivity";      // デバッグ用のタグ
     private final String ACTION_NAME = "startRecognitionAction";   // よくわかんないｗ
     BroadcastReceiver mBroadcastReceiver;                               // よくわかんないｗ
-    private SearchWeather sw;       //seacthWeatherクラスのインスタンス変数
+    private SearchWeather sw;       //SeacthWeatherクラスのインスタンス変数
 
     // アプリ起動時の一番最初に呼ばれる
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //SeacthWeatherクラスのインスタンス化
+        sw=new SearchWeather();
 
         // Activityの上書きが成功してるかどうか見るためにToastを表示している
         // ...正直このめんどい方法じゃなくてもできたかもしれない...
@@ -75,8 +78,6 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
         // https://gist.github.com/NegishiTakumi/ba7d678a13b85317db48
         Intent mIntent = new Intent(ACTION_NAME);
         sendBroadcast(mIntent);
-        //startRecognitionが呼ばれたかどうかの確認
-        Toast.makeText(this, "startRecognition is successful", Toast.LENGTH_LONG).show();
     }
 
     public void registerBroadcastReceiver() {
@@ -88,8 +89,6 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
     //unity側に認識した文字列を渡す
     public void sendUnity(String getstr){
         UnityPlayer.UnitySendMessage("VoiceRecognitionObject","onCallBackString",getstr);
-        Toast.makeText(this, "voice recognition is successful", Toast.LENGTH_LONG).show();
-        Toast.makeText(this, getstr, Toast.LENGTH_LONG).show();
     }
 
     // 認識とかエラーの処理が書いてある""Listener
@@ -192,6 +191,10 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
         }
     }
 
+
+    //天気の情報を取得する関数
+    //音声認識のクラスに入れちゃったけど別にどこでもいい
+    //そのときはunity側のコードを変える必要があるよ
     public void searchWeatherMethod(){
         sw.execute();
     }
