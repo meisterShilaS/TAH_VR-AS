@@ -141,7 +141,7 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
         // エラー時の処理
         // とりあえずログとToastに表示するだけ
         // 致命的なエラーの時もここが呼ばれるのでちゃんと例外投げたりしたほうがいいはず
-        // 認識失敗エラーのときだけ音声認識を再起動
+        // 認識失敗エラー，ビジー状態，タイムアウト時に音声認識を再起動
         @Override
         public void onError(int error) {
             String message = "RECOGNITION ERROR: " +
@@ -150,7 +150,10 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
             Log.d(TAG, message);
             Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
 
-            if(error == SpeechRecognizer.ERROR_NO_MATCH) {
+            if( error == SpeechRecognizer.ERROR_NO_MATCH ||
+                error == SpeechRecognizer.ERROR_RECOGNIZER_BUSY ||
+                error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT  )
+            {
                 Intent mIntent = new Intent(ACTION_NAME);
                 sendBroadcast(mIntent);
             }
