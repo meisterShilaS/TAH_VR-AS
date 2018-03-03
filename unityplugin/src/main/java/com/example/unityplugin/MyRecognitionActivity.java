@@ -25,15 +25,15 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
     private static final String TAG = "MyRecognitionActivity";      // デバッグ用のタグ
     private final String ACTION_NAME = "startRecognitionAction";   // よくわかんないｗ
     BroadcastReceiver mBroadcastReceiver;                               // よくわかんないｗ
+
     private SearchWeather sw;       //SeacthWeatherクラスのインスタンス変数
+    private String latitude;
+    private String longitude;
 
     // アプリ起動時の一番最初に呼ばれる
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //SeacthWeatherクラスのインスタンス化
-        sw=new SearchWeather();
 
         // Activityの上書きが成功してるかどうか見るためにToastを表示している
         // ...正直このめんどい方法じゃなくてもできたかもしれない...
@@ -198,7 +198,16 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
     //天気の情報を取得する関数
     //音声認識のクラスに入れちゃったけど別にどこでもいい
     //そのときはunity側のコードを変える必要があるよ
-    public void searchWeatherMethod(){
+    public void startSearchWeather(int day){
+
+        //SeacthWeatherクラスのインスタンス化
+        sw=new SearchWeather(this.latitude,this.longitude,day);
         sw.execute();
+    }
+
+
+    public void getLocation(String lat,String lon){
+        this.latitude=lat;
+        this.longitude=lon;
     }
 }
