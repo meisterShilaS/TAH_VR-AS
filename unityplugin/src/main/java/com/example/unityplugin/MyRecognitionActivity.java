@@ -30,6 +30,8 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
     private String latitude;
     private String longitude;
 
+    private SubAssistantFunction saf;
+
     // アプリ起動時の一番最初に呼ばれる
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,9 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
             }
         };
         registerBroadcastReceiver();
+
+
+        saf=new SubAssistantFunction();
     }
 
     public void startRecognition() {
@@ -209,5 +214,18 @@ public class MyRecognitionActivity extends UnityPlayerActivity {
     public void getLocation(String lat,String lon){
         this.latitude=lat;
         this.longitude=lon;
+    }
+
+
+    //現在の時刻を取得する関数
+    public String getNowTime(){
+        String time=saf.getNowTime();
+        return time;
+    }
+
+    //今日の日にちの取得
+    public String getNowDate(){
+        String date=saf.getNowDate();
+        return date;
     }
 }

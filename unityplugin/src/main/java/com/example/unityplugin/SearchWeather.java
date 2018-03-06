@@ -199,7 +199,7 @@ public class SearchWeather extends AsyncTask<Void, Void, String> {
     public String parseJsonLWWS(String str) {
         String day, weather, maxTemp, minTemp;
         String result = null;
-        maxTemp = minTemp = "不明";
+        maxTemp = minTemp = null;
         int when = searchDay - 1;
         try {
             JSONArray jsonArray = new JSONObject(str).getJSONArray("forecasts");
@@ -214,11 +214,15 @@ public class SearchWeather extends AsyncTask<Void, Void, String> {
             }
             if (temperature.get("min") != JSONObject.NULL) {
                 JSONObject minData = temperature.getJSONObject("min");
-                maxTemp = minData.getString("celsius");
+                minTemp = minData.getString("celsius");
                 minTemp += "度";
             }
 
-            result = day + "の天気は" + weather + "で，最高気温" + maxTemp + "，最低気温" + minTemp + "です";
+            if (maxTemp != null && minTemp != null) {
+                result=day+"の天気は"+weather+"で，最高気温"+maxTemp+"，最低気温"+minTemp+"です";
+            }else{
+                result=day+"の天気は"+weather+"です";
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
